@@ -11,3 +11,7 @@
 *.lai
 *.la
 *.a
+
+# Ignore build directories
+/2560-16M
+
