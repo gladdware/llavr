@@ -25,6 +25,9 @@ Build tested under the following configuration:
  - avr-gcc 4.7.2
  - avr-libc 1.8.0
  - binutils-avr 2.20.1
+ - Test board: Arduino Mega 2560
+
+The AVR Eclipse Plugin can be found [here](http://avr-eclipse.sourceforge.net/wiki/index.php/The_AVR_Eclipse_Plugin).
 
 ## License
 
