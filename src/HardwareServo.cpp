@@ -18,8 +18,8 @@
 
 #include "HardwareServo.h"
 
-// TODO remove
-#include "HardwareSerial.h"
+//// TODO remove
+//#include "HardwareSerial.h"
 
 /**
  * @brief Calculate the number of timer ticks in per one microsecond based on
@@ -261,13 +261,13 @@ HardwareServo::HardwareServo(
     // calculate ticks per micro
     timerTicks1us = __ticksPerMicroS(ticksPer20ms);
 
-    // TODO remove
-    Serial.println(F("*** Servo setup values:"));
-    Serial.print(F("  minUs: ")); Serial.println(minPulseWidthUs, DEC);
-    Serial.print(F("  midUs: ")); Serial.println(midPulseWidthUs, DEC);
-    Serial.print(F("  maxUs: ")); Serial.println(maxPulseWidthUs, DEC);
-    Serial.print(F("  tTop:  ")); Serial.println(ticksPer20ms, DEC);
-    Serial.print(F("  tk/Us: ")); Serial.println(timerTicks1us, 4);
+//    // TODO remove
+//    Serial.println(F("*** Servo setup values:"));
+//    Serial.print(F("  minUs: ")); Serial.println(minPulseWidthUs, DEC);
+//    Serial.print(F("  midUs: ")); Serial.println(midPulseWidthUs, DEC);
+//    Serial.print(F("  maxUs: ")); Serial.println(maxPulseWidthUs, DEC);
+//    Serial.print(F("  tTop:  ")); Serial.println(ticksPer20ms, DEC);
+//    Serial.print(F("  tk/Us: ")); Serial.println(timerTicks1us, 4);
 }
 
 bool HardwareServo::setPulseWidth(uint16_t pulseWidthUs) {
@@ -292,9 +292,9 @@ bool HardwareServo::setPulseWidth(uint16_t pulseWidthUs) {
     // round to get ocValue
     ocValue = (uint16_t)(round(pulseTicks));
 
-    // TODO remove
-    Serial.print(F("*** Servo setting pulse ticks: "));
-    Serial.println(ocValue, DEC);
+//    // TODO remove
+//    Serial.print(F("*** Servo setting pulse ticks: "));
+//    Serial.println(ocValue, DEC);
 
     // set the new compare value in the right channel
     switch(outputPin) {
