@@ -270,9 +270,10 @@ HardwareServo::HardwareServo(
     Serial.print(F("  tk/Us: ")); Serial.println(timerTicks1us, 4);
 }
 
-void HardwareServo::setPulseWidth(uint16_t pulseWidthUs) {
+bool HardwareServo::setPulseWidth(uint16_t pulseWidthUs) {
     uint16_t pw, ocValue;
     float pulseTicks;
+    bool result = false;
 
     if(pulseWidthUs < minPulseWidthUs) {
         pw = minPulseWidthUs;
@@ -280,6 +281,7 @@ void HardwareServo::setPulseWidth(uint16_t pulseWidthUs) {
         pw = maxPulseWidthUs;
     } else {
         pw = pulseWidthUs;
+        result = true;
     }
 
     this->pulseWidthUs = pw;
@@ -357,44 +359,50 @@ void HardwareServo::setPulseWidth(uint16_t pulseWidthUs) {
         break;
 #endif
     }
+
+    return result;
 }
 
-void HardwareServo::setAngle(float degrees) {
+bool HardwareServo::setAngle(float degrees) {
     float offset;
     uint16_t pw;
 
     if(degrees < -90.0F) {
         // set the min
         setPulseWidth(minPulseWidthUs);
+        return false;
     } else if(degrees > 90.0F) {
         // set the max
         setPulseWidth(maxPulseWidthUs);
+        return false;
     } else {
         // calculate pulse width
         offset = degrees * (float)microsPerDegree;
         pw = midPulseWidthUs + (uint16_t)round(offset);
 
         // set new pulse width
-        setPulseWidth(pw);
+        return setPulseWidth(pw);
     }
 }
 
-void HardwareServo::setPosition(float percentage) {
+bool HardwareServo::setPosition(float percentage) {
     float width;
     uint16_t pw;
 
     if(percentage < 0.0F) {
         // set the min
         setPulseWidth(minPulseWidthUs);
+        return false;
     } else if(percentage > 100.0F) {
         // set the max
         setPulseWidth(maxPulseWidthUs);
+        return false;
     } else {
         // calculate pulse width
         width = percentage * (float)microsPerPercent;
         pw = (uint16_t)round(width);
 
         // set new pulse width
-        setPulseWidth(pw);
+        return setPulseWidth(pw);
     }
 }

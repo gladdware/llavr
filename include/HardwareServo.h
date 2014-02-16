@@ -104,8 +104,10 @@ public:
      *   greater than the set maximum value set the maximum value.
      *
      * @param pulseWidthUs The pulse width to set (microseconds)
+     *
+     * @return true if the requested pulse width was set
      */
-    void setPulseWidth(uint16_t pulseWidthUs);
+    bool setPulseWidth(uint16_t pulseWidthUs);
 
     /**
      * @brief Set the servo angle, in +/- degrees from center; useful for servos
@@ -118,8 +120,10 @@ public:
      *   than -90.0 set the min. pulse width.
      *
      * @param degrees The servo angle to set (-90.0 <= degrees <= 90.0)
+     *
+     * @return true if the requested angle was set
      */
-    void setAngle(float degrees);
+    bool setAngle(float degrees);
 
     /**
      * @brief Set the servo position, as a percentage of the maximum; useful for
@@ -131,8 +135,10 @@ public:
      *   than 0.0 set the min. pulse width.
      *
      * @param percentage The servo position to set (0.0 <= percentage <= 100.0)
+     *
+     * @return true if the requested position was set
      */
-    void setPosition(float percentage);
+    bool setPosition(float percentage);
 
 protected:
     /** @brief the HW timer to use for this servo */
