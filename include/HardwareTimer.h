@@ -35,6 +35,13 @@ typedef enum {
     TIMER_OCR_C = bit(2),
 } TimerCompareChannel;
 
+typedef enum {
+    TIMER_MODE_NORMAL,
+    TIMER_MODE_CTC,
+    TIMER_MODE_FASTPWM,
+    TIMER_MODE_NONE = 255,
+} TimerMode;
+
 class HardwareTimer {
 public:
     /**
@@ -138,6 +145,21 @@ public:
         setCompareValue((uint8_t)TIMER_OCR_C, value, inverting);
     }
 
+    /**
+     * @brief Get the current prescale value for this timer
+     */
+    TimerPrescaler getPrescale();
+
+    /**
+     * @brief Get the current mode of this timer
+     */
+    TimerMode getMode();
+
+    /**
+     * @brief Get the current TOP value for this timer
+     */
+    uint16_t getTop();
+
 protected:
     /**
      * @brief Overwrite existing timer control registers with the given values
@@ -153,7 +175,11 @@ protected:
      */
     void resetTimerControl(uint8_t controlA, uint8_t controlB, uint8_t controlC);
 
+    /** @brief the current prescale value for this timer */
     TimerPrescaler prescale;
+
+    /** @brief the current mode for this timer */
+    TimerMode mode;
 
 private:
     bool is16Bit;               ///< is the timer 16-bit
@@ -165,7 +191,12 @@ private:
     volatile uint8_t *ocrCh, *ocrCl;        ///< timer output compare channel C
     volatile uint8_t *icrh, *icrl;          ///< timer input capture registers
     volatile uint8_t *timsk, *tifr;         ///< timer interrupt mask/flags
+
+    uint16_t topValue;          ///< current top value for timer
 };
+
+// definition for null timer
+#define NULL_HWTIMER ((HardwareTimer*)0)
 
 /*
  * The following static timer object will be allocated based on the targeted

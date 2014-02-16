@@ -82,7 +82,9 @@ HardwareTimer::HardwareTimer(
       ocrCh(ocrCh), ocrCl(ocrCl),
       icrh(icrh), icrl(icrl),
       timsk(timsk), tifr(tifr),
-      prescale(TIMER_PRESCALE_NONE) {
+      prescale(TIMER_PRESCALE_NONE),
+      mode(TIMER_MODE_NONE),
+      topValue(0xFFFF) {
     // nop
 }
 
@@ -98,6 +100,8 @@ void HardwareTimer::setNormalMode() {
     uint8_t ctrlA = 0;
     uint8_t ctrlB = 0;
     uint8_t ctrlC = 0;
+
+    mode = TIMER_MODE_NORMAL;
 
     // normal mode: WGM0..2 set to all zeros
     // just need to set clock select
@@ -115,6 +119,9 @@ void HardwareTimer::setFastPwmMode(uint16_t topValue) {
     uint8_t ctrlA = 0;
     uint8_t ctrlB = 0;
     uint8_t ctrlC = 0;
+
+    mode = TIMER_MODE_FASTPWM;
+    this->topValue = topValue;
 
     /*
      * For 16-bit timers, use mode 14 (TOP == ICRn)
@@ -172,13 +179,25 @@ void HardwareTimer::setCompareValue(uint8_t channels, uint16_t value, bool inver
         __setWideReg(ocrBh, ocrBl, value);
     }
 
-    if(is16Bit && (channels & TIMER_OCR_C)) {
+    if((numOcrChannels > 2) && (channels & TIMER_OCR_C)) {
         curTccrA |= (comVal << COM1C0);
         __setWideReg(ocrCh, ocrCl, value);
     }
 
     // reset control
     resetTimerControl(curTccrA, curTccrB, curTccrC);
+}
+
+TimerPrescaler HardwareTimer::getPrescale() {
+    return prescale;
+}
+
+TimerMode HardwareTimer::getMode() {
+    return mode;
+}
+
+uint16_t HardwareTimer::getTop() {
+    return topValue;
 }
 
 void HardwareTimer::resetTimerControl(uint8_t controlA, uint8_t controlB, uint8_t controlC) {
